@@ -6,6 +6,7 @@ import { Lesson } from '../model/lesson';
 import { concatMap, delay, filter, first, map, shareReplay, tap, withLatestFrom } from 'rxjs/operators';
 import { CourseEntityService } from '../services/course-entity.service';
 import { LessonEntityService } from '../services/lesson-entity.service';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -16,6 +17,8 @@ import { LessonEntityService } from '../services/lesson-entity.service';
 export class CourseComponent implements OnInit {
 
   course$: Observable<Course>;
+
+  loading$: Observable<boolean>;
 
   lessons$: Observable<Lesson[]>;
 
@@ -39,15 +42,33 @@ export class CourseComponent implements OnInit {
         map(courses => courses.find(course => course.url == courseUrl))
       );
 
-    this.lessons$ = this.course$.pipe(
-      concatMap(course => this.coursesService.findLessons(course.id)),
-      tap(console.log)
-    );
+    this.lessons$ = this.lessonService.entities$
+      .pipe(
+        withLatestFrom(this.course$),
+        tap(([lessons, course]) => {
+
+          if (this.nextPage == 0) {
+            this.loadLessonsPage(course)
+          }
+
+        }),
+        map(([lessons, course]) => lessons.filter(lesson => lesson.courseId == course.id))
+      );
+
+    this.loading$ = this.lessonService.loading$.pipe(delay(0));
 
   }
 
 
   loadLessonsPage(course: Course) {
+
+    this.lessonService.getWithQuery({
+      'courseId': course.id.toString(),
+      'pageNumber': this.nextPage.toString(),
+      'pageSize': '3'
+    });
+
+    this.nextPage += 1;
 
   }
 
