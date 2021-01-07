@@ -5,11 +5,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CoursesHttpService } from '../services/courses-http.service';
 import { CourseEntityService } from '../services/course-entity.service';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'course-dialog',
   templateUrl: './edit-course-dialog.component.html',
-  styleUrls: ['./edit-course-dialog.component.css']
+  styleUrls: ['./edit-course-dialog.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditCourseDialogComponent {
 
@@ -73,7 +75,7 @@ export class EditCourseDialogComponent {
       this.coursesService.add(course)
         .subscribe(
           newCourse => {
-            
+
             console.log("New Course", newCourse);
 
             this.dialogRef.close();

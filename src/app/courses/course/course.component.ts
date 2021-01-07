@@ -7,12 +7,14 @@ import { concatMap, delay, filter, first, map, shareReplay, tap, withLatestFrom 
 import { CourseEntityService } from '../services/course-entity.service';
 import { LessonEntityService } from '../services/lesson-entity.service';
 import { of } from 'rxjs';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 
 @Component({
   selector: 'course',
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.css']
+  styleUrls: ['./course.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseComponent implements OnInit {
 
