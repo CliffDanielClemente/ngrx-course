@@ -42,14 +42,17 @@ export const coursesRoutes: Routes = [
     path: ':courseUrl',
     component: CourseComponent,
     resolve: {
-      courses: CoursesResolver
+      courses: CoursesResolver 
     }
   }
 ];
 
 const entityMetadata: EntityMetadataMap = {
   Course: {
-    sortComparer: compareCourses
+    sortComparer: compareCourses,
+    entityDispatcherOptions: {
+      optimisticUpdate: true
+    }
   }
 };
 
