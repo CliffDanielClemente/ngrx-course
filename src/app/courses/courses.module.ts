@@ -39,6 +39,12 @@ export const coursesRoutes: Routes = [
   }
 ];
 
+const entityMetadata: EntityMetadataMap = {
+  Course: {
+    
+  }
+};
+
 @NgModule({
   imports: [
     CommonModule,
@@ -73,12 +79,15 @@ export const coursesRoutes: Routes = [
   ],
   entryComponents: [EditCourseDialogComponent],
   providers: [
+    CoursesHttpService,
     CoursesHttpService
   ]
 })
 export class CoursesModule {
 
-  constructor() {
+  constructor(private eds: EntityDefinitionService) {
+
+    eds.registerMetadataMap(entityMetadata);
 
   }
 
